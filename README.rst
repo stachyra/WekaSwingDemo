@@ -82,7 +82,7 @@ Simulated data can be generated artificially using the data generation popup win
 
 When it's initially loaded, raw unclustered data looks like this.
 
-.. figure:: screenshots/clusterdata.png
+.. figure:: screenshots/clusterddata.png
 
 Select various Weka clustering algorithms from the ``Cluster`` menu in order to calculate the cluster membership of each data point.
 
