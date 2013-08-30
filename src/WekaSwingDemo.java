@@ -54,10 +54,10 @@ public class WekaSwingDemo {
 	private ChartPanel cp;
 	// Source of data (e.g., filename, "Simulated Data", etc.)
 	String dsname;
-    
+	
 	/**
-	 * Launch the application.
-	 */
+	* Launch the application.
+	*/
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -119,13 +119,13 @@ public class WekaSwingDemo {
 		
 		// Set file chooser properties
 		fc.setFileFilter(new FileNameExtensionFilter(
-		        "Weka data files (.csv, .arff, .xrff)", "csv", "arff", "xrff"));
+				"Weka data files (.csv, .arff, .xrff)", "csv", "arff", "xrff"));
 		fc.addChoosableFileFilter(new FileNameExtensionFilter(
-		        "Comma separated value (.csv)", "csv"));
+				"Comma separated value (.csv)", "csv"));
 		fc.addChoosableFileFilter(new FileNameExtensionFilter(
-		        "Attribute-relation file format (.arff)", "arff"));
+				"Attribute-relation file format (.arff)", "arff"));
 		fc.addChoosableFileFilter(new FileNameExtensionFilter(
-		        "XML attribute relation file format (.xrff)", "xrff"));
+				"XML attribute relation file format (.xrff)", "xrff"));
 		
 		// File/Open menu item
 		JMenuItem mntmOpen = new JMenuItem("Open");
@@ -136,19 +136,19 @@ public class WekaSwingDemo {
 				int returnVal = fc.showOpenDialog(frame);
 				// If the user selects a file...
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
-				    File file = fc.getSelectedFile();
-				    try {
-				    	// Display wait cursor while loading and drawing the file
+					File file = fc.getSelectedFile();
+					try {
+						// Display wait cursor while loading and drawing the file
 						frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				    	// Attempt to open the file
+						// Attempt to open the file
 						Instances tmpinst =  DataSource.read(file.getAbsolutePath());
 						int na = tmpinst.numAttributes();
 						// Check that all columns are numeric; if not then return in failure
 						for (int ii=0; ii<na; ii++) {
 							if (tmpinst.attribute(ii).isNumeric() != true) {
 								JOptionPane.showMessageDialog(frame,
-								    "File format not recognized; all\nattribute values must be numeric",
-								    "File Format Error", JOptionPane.ERROR_MESSAGE);
+									"File format not recognized; all\nattribute values must be numeric",
+									"File Format Error", JOptionPane.ERROR_MESSAGE);
 								return;
 							}
 						}
@@ -162,7 +162,7 @@ public class WekaSwingDemo {
 								// make it the cluster attribute
 								String attname = tmpinst.attribute(ii).name();
 								if ((attname.indexOf("cluster") != -1) ||
-								    (attname.indexOf("class") != -1)) {
+									(attname.indexOf("class") != -1)) {
 									tmpinst.setClassIndex(ii);
 									break;
 								}
@@ -209,7 +209,7 @@ public class WekaSwingDemo {
 					} catch (Exception ex) {
 						// Alert user with popup window if file can't be loaded
 						JOptionPane.showMessageDialog(frame, "Unable to read file " +
-						    file.getName(), "File I/O Error", JOptionPane.ERROR_MESSAGE);
+							file.getName(), "File I/O Error", JOptionPane.ERROR_MESSAGE);
 					} finally {
 						// Transition back from wait cursor to default cursor
 						frame.setCursor(Cursor.getDefaultCursor());
@@ -231,14 +231,14 @@ public class WekaSwingDemo {
 				// If the user selects a file...
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
 					// Get the file name
-				    File file = fc.getSelectedFile();
-				    String fname = file.getName();
-				    // Get the file extension
-				    int idx = fname.lastIndexOf(".");
-				    String ext;
-				    if (idx >= 0 && idx < fname.length()) {
-				    	ext = fname.substring(idx,fname.length());
-				    } else {
+					File file = fc.getSelectedFile();
+					String fname = file.getName();
+					// Get the file extension
+					int idx = fname.lastIndexOf(".");
+					String ext;
+					if (idx >= 0 && idx < fname.length()) {
+						ext = fname.substring(idx,fname.length());
+					} else {
 				    	ext = "";
 				    }
 				    // If the extension isn't recognized...
@@ -250,21 +250,21 @@ public class WekaSwingDemo {
 				    	if (ff == fc.getAcceptAllFileFilter()) {
 				    		file = new File(file.getAbsolutePath() + ".arff");
 				    	} else {
-				    	    String[] choosext = ((FileNameExtensionFilter) ff).getExtensions();
-				    	    if (choosext.length > 1) {
-				       		    file = new File(file.getAbsolutePath() + ".arff");
-				    	    } else {
-				    		    file = new File(file.getAbsolutePath() + "." + choosext[0]);
-				    	    }
+				    		String[] choosext = ((FileNameExtensionFilter) ff).getExtensions();
+				    		if (choosext.length > 1) {
+				    			file = new File(file.getAbsolutePath() + ".arff");
+				    		} else {
+				    			file = new File(file.getAbsolutePath() + "." + choosext[0]);
+				    		}
 				    	}
 				    }
 				    try {
 				    	// Attempt to save the file
-						DataSink.write(file.getAbsolutePath(), instances);
-					} catch (Exception ex) {
+				    	DataSink.write(file.getAbsolutePath(), instances);
+				    } catch (Exception ex) {
 						// Alert user with popup window if file can't be saved
 						JOptionPane.showMessageDialog(frame, "Unable to save file " +
-						    file.getName(), "File I/O Error", JOptionPane.ERROR_MESSAGE);
+							file.getName(), "File I/O Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -319,17 +319,17 @@ public class WekaSwingDemo {
 					// Remove cluster attribute from instances variable
 					removeClustAttr();
 					// Calculate number of clusters and their defining parameters
- 				    cw.buildClusterer(instances);
- 				    int ni = instances.numInstances();
- 				    int[] clsval = new int[ni];
- 				    // Loop over all of the instances and get the cluster membership of each
- 				    for (int ii=0; ii<ni; ii++) {
- 				    	clsval[ii] = cw.clusterInstance(instances.instance(ii));
- 				    }
- 				    // Record the cluster membership of each instance in a new cluster attribute
-                    addClustAttr(clsval);
-                    reDraw(String.format("%s with Cobweb", dsname));
-				} catch (Exception ex) {
+					cw.buildClusterer(instances);
+					int ni = instances.numInstances();
+					int[] clsval = new int[ni];
+					// Loop over all of the instances and get the cluster membership of each
+					for (int ii=0; ii<ni; ii++) {
+						clsval[ii] = cw.clusterInstance(instances.instance(ii));
+					}
+					// Record the cluster membership of each instance in a new cluster attribute
+					addClustAttr(clsval);
+					reDraw(String.format("%s with Cobweb", dsname));
+					} catch (Exception ex) {
 					// Alert user with popup window if clustering can't be completed
 					JOptionPane.showMessageDialog(frame,
 						"Unable to perform clustering",
@@ -354,16 +354,16 @@ public class WekaSwingDemo {
 					// Remove cluster attribute from instances variable
 					removeClustAttr();
 					// Calculate number of clusters and their defining parameters
- 				    em.buildClusterer(instances);
- 				    int ni = instances.numInstances();
- 				    int[] clsval = new int[ni];
-   				    // Loop over all of the instances and get the cluster membership of each
- 				    for (int ii=0; ii<ni; ii++) {
- 				    	clsval[ii] = em.clusterInstance(instances.instance(ii));
- 				    }
- 				    // Record the cluster membership of each instance in a new cluster attribute
-                    addClustAttr(clsval);
-                    reDraw(String.format("%s with Expectation Maximization", dsname));
+					em.buildClusterer(instances);
+					int ni = instances.numInstances();
+					int[] clsval = new int[ni];
+					// Loop over all of the instances and get the cluster membership of each
+					for (int ii=0; ii<ni; ii++) {
+						clsval[ii] = em.clusterInstance(instances.instance(ii));
+					}
+					// Record the cluster membership of each instance in a new cluster attribute
+					addClustAttr(clsval);
+					reDraw(String.format("%s with Expectation Maximization", dsname));
 				} catch (Exception ex) {
 					// Alert user with popup window if clustering can't be completed
 					JOptionPane.showMessageDialog(frame,
@@ -391,16 +391,16 @@ public class WekaSwingDemo {
 					// Remove cluster attribute from instances variable
 					removeClustAttr();
 					// Calculate number of clusters and their defining parameters
- 				    xm.buildClusterer(instances);
- 				    int ni = instances.numInstances();
- 				    int[] clsval = new int[ni];
- 				    // Loop over all of the instances and get the cluster membership of each
- 				    for (int ii=0; ii<ni; ii++) {
- 				    	clsval[ii] = xm.clusterInstance(instances.instance(ii));
- 				    }
- 				    // Record the cluster membership of each instance in a new cluster attribute
-                    addClustAttr(clsval);
-                    reDraw(String.format("%s with XMeans", dsname));
+					xm.buildClusterer(instances);
+					int ni = instances.numInstances();
+					int[] clsval = new int[ni];
+					// Loop over all of the instances and get the cluster membership of each
+					for (int ii=0; ii<ni; ii++) {
+						clsval[ii] = xm.clusterInstance(instances.instance(ii));
+					}
+					// Record the cluster membership of each instance in a new cluster attribute
+					addClustAttr(clsval);
+					reDraw(String.format("%s with XMeans", dsname));
 				} catch (Exception ex) {
 					// Alert user with popup window if clustering can't be completed
 					JOptionPane.showMessageDialog(frame,
@@ -441,52 +441,52 @@ public class WekaSwingDemo {
 			// third column (ic = 2, indexing from 0), but do make allowances
 			// for other possibilities
 			switch (ic) {
-			    case  0: idx[0] = 1; idx[1] = 2; break;
-			    case  1: idx[0] = 0; idx[1] = 2; break;
-			    case  2:
-			    case -1:
-			    default: idx[0] = 0; idx[1] = 1; break;
+				case  0: idx[0] = 1; idx[1] = 2; break;
+				case  1: idx[0] = 0; idx[1] = 2; break;
+				case  2:
+				case -1:
+				default: idx[0] = 0; idx[1] = 1; break;
 			}
 			// Get all of the cluster ID numbers, if the cluster attribute is defined
-  			for (int ii=0; ii<nrows; ii++) {
-			    data = instances.instance(ii).toDoubleArray();
+			for (int ii=0; ii<nrows; ii++) {
+				data = instances.instance(ii).toDoubleArray();
 				if (ic != -1) c[ii] = (int) data[ic];
-  			}
-  			// If the cluster attribute is defined...
-  			if (ic != -1) {
-  				// Reduce the cluster ID values to a set
-   			    Set<Integer> set = new TreeSet<Integer>(Arrays.asList(c));
-   			    // Loop over all items in the set, and add instances from each cluster to
-   			    // a new JFreeChart XYSeries object
-  			    for (Object object : set) {
-  			    	Integer cls = (Integer) object;
-  			    	XYSeries series = new XYSeries(String.format("Cluster %d", cls));
-  			    	for (int ii=0; ii<nrows; ii++) {
-  			    		data = instances.instance(ii).toDoubleArray();
-  			    		if ((int) data[ic] == cls) {
-  			    			series.add(data[idx[0]], data[idx[1]]);
-  			    		}
-  			    	}
-  			    	clusters.addSeries(series);
-  			    }
-  			// If no cluster attribute is defined, simply plot as raw data
-  			} else {
-  				XYSeries series = new XYSeries("Raw Unclustered Data");
-			    for (int ii=0; ii<nrows; ii++) {
-			    	data = instances.instance(ii).toDoubleArray();
-			    	series.add(data[idx[0]], data[idx[1]]);
-			    }
-			    clusters.addSeries(series);
+			}
+			// If the cluster attribute is defined...
+			if (ic != -1) {
+				// Reduce the cluster ID values to a set
+				Set<Integer> set = new TreeSet<Integer>(Arrays.asList(c));
+				// Loop over all items in the set, and add instances from each cluster to
+				// a new JFreeChart XYSeries object
+				for (Object object : set) {
+					Integer cls = (Integer) object;
+					XYSeries series = new XYSeries(String.format("Cluster %d", cls));
+					for (int ii=0; ii<nrows; ii++) {
+						data = instances.instance(ii).toDoubleArray();
+						if ((int) data[ic] == cls) {
+							series.add(data[idx[0]], data[idx[1]]);
+						}
+					}
+					clusters.addSeries(series);
+				}
+			// If no cluster attribute is defined, simply plot as raw data
+			} else {
+				XYSeries series = new XYSeries("Raw Unclustered Data");
+				for (int ii=0; ii<nrows; ii++) {
+					data = instances.instance(ii).toDoubleArray();
+					series.add(data[idx[0]], data[idx[1]]);
+				}
+				clusters.addSeries(series);
   			}
   			// Add title
   			chart.setTitle(ttl);
   		// In theory, this code should never execute, as the validation code in
-  	    // the File/Open actionPerformed() method should ensure that only the first
-  	    // if clause immediately above this is ever true.  But we leave it in as a
-  	    // hedge against unforeseen user inputs or logic errors.
-		} else {
-			String errmsg;
-			if (ic == -1) {
+  		// the File/Open actionPerformed() method should ensure that only the first
+  		// if clause immediately above this is ever true.  But we leave it in as a
+  		// hedge against unforeseen user inputs or logic errors.
+  		} else {
+  			String errmsg;
+  			if (ic == -1) {
 				errmsg = "Data set has " + ncols +
 					" attributes with no cluster attribute; valid\nformats are 2 attributes (without clusters) or 3 attributes (with clusters)";
 			} else {
@@ -505,8 +505,8 @@ public class WekaSwingDemo {
 		int ic = instances.classIndex(); // Index of cluster attribute
 		// If the cluster attribute exists, delete it
 		if (ic != -1) {
-		    instances.setClassIndex(-1);
-		    instances.deleteAttributeAt(ic);
+			instances.setClassIndex(-1);
+			instances.deleteAttributeAt(ic);
 		}
 	}
 	
@@ -523,11 +523,11 @@ public class WekaSwingDemo {
 		// Create the cluster attribute and append it to the instances variable
 		Attribute clsatt = new Attribute("cluster");
 		instances.insertAttributeAt(clsatt, instances.numAttributes());
-        // Figure out which column the cluster attribute is
+		// Figure out which column the cluster attribute is
 		int na = instances.numAttributes();
 		// Loop through all of the instances and set the value of the cluster attribute
 		for (int ii=0; ii<cval.length; ii++) {
-		    instances.instance(ii).setValue(na-1, cval[ii]);
+			instances.instance(ii).setValue(na-1, cval[ii]);
 		}
 		instances.setClassIndex(na-1);
 	}
