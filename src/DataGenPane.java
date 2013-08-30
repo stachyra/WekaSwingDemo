@@ -37,26 +37,26 @@ public class DataGenPane {
 	 * Show window with 6 JLabels, 6 JTextField inputs, an "autopopulate" button
 	 * to fill in the JTextFields with reasonable defaults, and OK/Cancel buttons 
 	 */
-    public int showDialog(Component parentComponent) {
-    	// Create a blank panel with items stacked vertically
-    	JPanel panel = new JPanel(new GridLayout(0,1));
-    	// Add 6 labels and 6 input fields
-    	panel.add(new JLabel("Number of points in each cluster"));
-    	panel.add(fNPts);
-    	panel.add(new JLabel("Cluster centroid x position"));
-    	panel.add(fXCtrd);
-    	panel.add(new JLabel("Cluster centroid y position"));
-    	panel.add(fYCtrd);
-    	panel.add(new JLabel("Horizontal standard deviation"));
-    	panel.add(fHStd);
-    	panel.add(new JLabel("Vertical standard deviation"));
-    	panel.add(fVStd);
-    	panel.add(new JLabel("Rotation angle (deg) of std dev relative to xy axes"));
-    	panel.add(fRotAngle);
-    	// Add a button to fill in the 6 JTextField fields with automatically
-    	// generated default values
-    	JButton ap = new JButton("AutoPopulate");
-    	ap.addActionListener(new ActionListener() {
+	public int showDialog(Component parentComponent) {
+		// Create a blank panel with items stacked vertically
+		JPanel panel = new JPanel(new GridLayout(0,1));
+		// Add 6 labels and 6 input fields
+		panel.add(new JLabel("Number of points in each cluster"));
+		panel.add(fNPts);
+		panel.add(new JLabel("Cluster centroid x position"));
+		panel.add(fXCtrd);
+		panel.add(new JLabel("Cluster centroid y position"));
+		panel.add(fYCtrd);
+		panel.add(new JLabel("Horizontal standard deviation"));
+		panel.add(fHStd);
+		panel.add(new JLabel("Vertical standard deviation"));
+		panel.add(fVStd);
+		panel.add(new JLabel("Rotation angle (deg) of std dev relative to xy axes"));
+		panel.add(fRotAngle);
+		// Add a button to fill in the 6 JTextField fields with automatically
+		// generated default values
+		JButton ap = new JButton("AutoPopulate");
+		ap.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
 				int n = (int) (3 + (8*Math.random())); // Number of clusters
@@ -90,179 +90,179 @@ public class DataGenPane {
 				fVStd.setText(tvstd);
 				fRotAngle.setText(trotangle);
 			}
-    	});
-    	// Attach the autopopulate button to the main panel 
-    	panel.add(ap);
-    	// Becomes true when all values in the 6 JTextFields are found to be valid;
-    	// assume false until proven otherwise
-    	boolean success = false;
-    	int retval = JOptionPane.CANCEL_OPTION;
-    	// Keep popping up the panel until the user either provides valid inputs
-    	// or preseses the "cancel" button
-    	while (success == false) {
-    		retval = JOptionPane.showConfirmDialog(parentComponent, panel,
-            	 	     "Simulated Data Generation", JOptionPane.OK_CANCEL_OPTION,
-            		     JOptionPane.PLAIN_MESSAGE);
-    		// Permit the user to exit the loop by pressing the cancel button
-    		if (retval == JOptionPane.CANCEL_OPTION) {
-    			return retval;
-    		}
-    		// Attempt to parse user inputs from 6 JTextFields 
-    		success = loadInput();
-    		// If inputs can't be parsed, show the user an error acknowledgement message
-    		if (success == false) {
-    			JOptionPane.showMessageDialog(parentComponent,
-    				"Inputs must be equal length, comma separated, and numeric only",
-    				"Input Error", JOptionPane.ERROR_MESSAGE);
-    		}
-    	}
-        return retval;
-    }
+		});
+		// Attach the autopopulate button to the main panel 
+		panel.add(ap);
+		// Becomes true when all values in the 6 JTextFields are found to be valid;
+		// assume false until proven otherwise
+		boolean success = false;
+		int retval = JOptionPane.CANCEL_OPTION;
+		// Keep popping up the panel until the user either provides valid inputs
+		// or preseses the "cancel" button
+		while (success == false) {
+			retval = JOptionPane.showConfirmDialog(parentComponent, panel,
+						"Simulated Data Generation", JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.PLAIN_MESSAGE);
+			// Permit the user to exit the loop by pressing the cancel button
+			if (retval == JOptionPane.CANCEL_OPTION) {
+				return retval;
+			}
+			// Attempt to parse user inputs from 6 JTextFields 
+			success = loadInput();
+			// If inputs can't be parsed, show the user an error acknowledgement message
+			if (success == false) {
+				JOptionPane.showMessageDialog(parentComponent,
+					"Inputs must be equal length, comma separated, and numeric only",
+					"Input Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return retval;
+	}
     
-    /*
-     * Attempt to read in and validate the inputs in the 6 JTextFields
-     */
-    private boolean loadInput() {
-    	// Get text in JTextField and split it into comma separated tokens
-    	String[] tokens = fNPts.getText().split(",");
-    	// Translate all tokens to integer values, or else return failure
-    	for (String tok:tokens) {
-    		try {
-    			npts.add(Integer.valueOf(tok.trim()));
-    		} catch(Exception ex) {
-    			reZeroParams();
-    			return false;
-    		}
-    	}
-    	// Similar to previous: read in text in JTextField as comma separated
-    	// tokens, then replace with float values or else return failure
-    	tokens = fXCtrd.getText().split(",");
-    	for (String tok:tokens) {
-    		try {
-    			xctrd.add(Float.valueOf(tok));
-    		} catch(Exception ex) {
-    			reZeroParams();
-    			return false;
-    		}
-    	}
-    	tokens = fYCtrd.getText().split(",");
-    	for (String tok:tokens) {
-    		try {
-    			yctrd.add(Float.valueOf(tok));
-    		} catch(Exception ex) {
-    			reZeroParams();
-    			return false;
-    		}
-    	}
-    	tokens = fHStd.getText().split(",");
-    	for (String tok:tokens) {
-    		try {
-    			hstd.add(Float.valueOf(tok));
-    		} catch(Exception ex) {
-    			reZeroParams();
-    			return false;
-    		}
-    	}
-    	tokens = fVStd.getText().split(",");
-    	for (String tok:tokens) {
-    		try {
-    			vstd.add(Float.valueOf(tok));
-    		} catch(Exception ex) {
-    			reZeroParams();
-    			return false;
-    		}
-    	}
-    	tokens = fRotAngle.getText().split(",");
-    	for (String tok:tokens) {
-    		try {
-    			rotangle.add(Float.valueOf(tok));
-    		} catch(Exception ex) {
-    			reZeroParams();
-    			return false;
-    		}
-    	}
-    	// Make sure all fields have equal number of tokens, otherwise return failure
-        int n = npts.size();
-        if ((xctrd.size() != n) ||
-            (yctrd.size() != n) ||
-            (hstd.size() != n) ||
-            (vstd.size() != n) ||
-            (rotangle.size() != n)) {
-        	    return false;
-        }
-    	return true;
-    }
+	/*
+	 * Attempt to read in and validate the inputs in the 6 JTextFields
+	 */
+	private boolean loadInput() {
+		// Get text in JTextField and split it into comma separated tokens
+		String[] tokens = fNPts.getText().split(",");
+		// Translate all tokens to integer values, or else return failure
+		for (String tok:tokens) {
+			try {
+				npts.add(Integer.valueOf(tok.trim()));
+			} catch(Exception ex) {
+				reZeroParams();
+				return false;
+			}
+		}
+		// Similar to previous: read in text in JTextField as comma separated
+		// tokens, then replace with float values or else return failure
+		tokens = fXCtrd.getText().split(",");
+		for (String tok:tokens) {
+			try {
+				xctrd.add(Float.valueOf(tok));
+			} catch(Exception ex) {
+				reZeroParams();
+				return false;
+			}
+		}
+		tokens = fYCtrd.getText().split(",");
+		for (String tok:tokens) {
+			try {
+				yctrd.add(Float.valueOf(tok));
+			} catch(Exception ex) {
+				reZeroParams();
+				return false;
+			}
+		}
+		tokens = fHStd.getText().split(",");
+		for (String tok:tokens) {
+			try {
+				hstd.add(Float.valueOf(tok));
+			} catch(Exception ex) {
+				reZeroParams();
+				return false;
+			}
+		}
+		tokens = fVStd.getText().split(",");
+		for (String tok:tokens) {
+			try {
+				vstd.add(Float.valueOf(tok));
+			} catch(Exception ex) {
+				reZeroParams();
+				return false;
+			}
+		}
+		tokens = fRotAngle.getText().split(",");
+		for (String tok:tokens) {
+			try {
+				rotangle.add(Float.valueOf(tok));
+			} catch(Exception ex) {
+				reZeroParams();
+				return false;
+			}
+		}
+		// Make sure all fields have equal number of tokens, otherwise return failure
+		int n = npts.size();
+		if ((xctrd.size() != n) ||
+			(yctrd.size() != n) ||
+			(hstd.size() != n) ||
+			(vstd.size() != n) ||
+			(rotangle.size() != n)) {
+				return false;
+		}
+		return true;
+	}
     
-    /*
-     * Reinitialize all 6 JTextField values to blanks
-     */
-    private void reZeroParams() {
-    	npts.clear();
-    	xctrd.clear();
-    	yctrd.clear();
-    	hstd.clear();
-    	vstd.clear();
-    	rotangle.clear();
-    }
+	/*
+	 * Reinitialize all 6 JTextField values to blanks
+	 */
+	private void reZeroParams() {
+		npts.clear();
+		xctrd.clear();
+		yctrd.clear();
+		hstd.clear();
+		vstd.clear();
+		rotangle.clear();
+	}
     
-    /* 
-     * Translate 6 JTextField user inputs to Weka instances
-     */
-    public Instances getInstances() {
-    	// Create attributes labeled "x" and "y"
-    	Attribute x = new Attribute("x");
-    	Attribute y = new Attribute("y");
-    	FastVector fvAttInfo = new FastVector();
-    	fvAttInfo.addElement(x);
-    	fvAttInfo.addElement(y);
-    	int ntot = 0; // Total number of data points or instances
-    	// Loop through all clusters and count up total number of points from
-    	// all clusters
-    	for (int ii=0; ii<npts.size(); ii++) {
-    		ntot += npts.get(ii);
-    	}
-    	// Initialize a type of Weka-specific array so that it will be sufficiently
-    	// large enough to hold all data from all clusters
-    	Instances data = new Instances("Simulated Data", fvAttInfo, ntot);
-    	Random ran = new Random();
-    	// Loop through clusters
-    	for (int ii=0; ii<npts.size(); ii++) {
-    		// Calculate sine and cosine of ellipsoid rotation angle
-    		float ca = (float) Math.cos(rotangle.get(ii) * Math.PI / 180);
-    		float sa = (float) Math.sin(rotangle.get(ii) * Math.PI / 180);
-    		// Loop through number of points within each cluster
-    		for (int ij=0; ij<npts.get(ii); ij++) {
-    			// Generate two separate distributions of Gaussian distributed points,
-    			// with standard deviations that are the same for all points within the
-    			// same cluster, but different for points in different clusters
-    			float hran = hstd.get(ii) * (float) ran.nextGaussian();
-    			float vran = vstd.get(ii) * (float) ran.nextGaussian();
-    			// Rotate Gaussian distributed points by random rotation angle.
-    			// with one angle per cluster
-    			float xran = ca * hran - sa * vran;
-    			float yran = sa * hran + ca * vran;
-    			// Add random horizontal and vertical offsets, one offset per cluster
-    			float xpos = xctrd.get(ii) + xran;
-    			float ypos = yctrd.get(ii) + yran;
-    			// Create empty instance with two attribute values
-    			Instance tmp = new Instance(2);
-    			// Add artifically generated values to empty instance
-    			tmp.setValue(x, xpos);
-    			tmp.setValue(y, ypos);
-    			// Add newly populated instance to the main Weka data object created
-    			// initially at the top of this function
-    			data.add(tmp);
-    		}
-    	}
-    	// Return the data object to the user
-    	return data;
-    }
+	/* 
+	 * Translate 6 JTextField user inputs to Weka instances
+	 */
+	public Instances getInstances() {
+		// Create attributes labeled "x" and "y"
+		Attribute x = new Attribute("x");
+		Attribute y = new Attribute("y");
+		FastVector fvAttInfo = new FastVector();
+		fvAttInfo.addElement(x);
+		fvAttInfo.addElement(y);
+		int ntot = 0; // Total number of data points or instances
+		// Loop through all clusters and count up total number of points from
+		// all clusters
+		for (int ii=0; ii<npts.size(); ii++) {
+			ntot += npts.get(ii);
+		}
+		// Initialize a type of Weka-specific array so that it will be sufficiently
+		// large enough to hold all data from all clusters
+		Instances data = new Instances("Simulated Data", fvAttInfo, ntot);
+		Random ran = new Random();
+		// Loop through clusters
+		for (int ii=0; ii<npts.size(); ii++) {
+			// Calculate sine and cosine of ellipsoid rotation angle
+			float ca = (float) Math.cos(rotangle.get(ii) * Math.PI / 180);
+			float sa = (float) Math.sin(rotangle.get(ii) * Math.PI / 180);
+			// Loop through number of points within each cluster
+			for (int ij=0; ij<npts.get(ii); ij++) {
+				// Generate two separate distributions of Gaussian distributed points,
+				// with standard deviations that are the same for all points within the
+				// same cluster, but different for points in different clusters
+				float hran = hstd.get(ii) * (float) ran.nextGaussian();
+				float vran = vstd.get(ii) * (float) ran.nextGaussian();
+				// Rotate Gaussian distributed points by random rotation angle.
+				// with one angle per cluster
+				float xran = ca * hran - sa * vran;
+				float yran = sa * hran + ca * vran;
+				// Add random horizontal and vertical offsets, one offset per cluster
+				float xpos = xctrd.get(ii) + xran;
+				float ypos = yctrd.get(ii) + yran;
+				// Create empty instance with two attribute values
+				Instance tmp = new Instance(2);
+				// Add artifically generated values to empty instance
+				tmp.setValue(x, xpos);
+				tmp.setValue(y, ypos);
+				// Add newly populated instance to the main Weka data object created
+				// initially at the top of this function
+				data.add(tmp);
+			}
+		}
+		// Return the data object to the user
+		return data;
+	}
     
-    /*
-     * Test method to check that other methods are all functioning correctly
-     */
-    public static void main(String[] args) {
-    	DataGenPane dgp = new DataGenPane();
+	/*
+	 * Test method to check that other methods are all functioning correctly
+	 */
+	public static void main(String[] args) {
+		DataGenPane dgp = new DataGenPane();
 		int retval = dgp.showDialog(null);
 		if (retval == JOptionPane.OK_OPTION) {
 			Instances instances = dgp.getInstances();
@@ -279,5 +279,5 @@ public class DataGenPane {
 		} else {
 			System.out.println("User hit the cancel button!");
 		}
-    }
+	}
 }
