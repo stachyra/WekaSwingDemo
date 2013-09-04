@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+// http://www.jfree.org/jfreechart/
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -53,7 +54,7 @@ public class WekaSwingDemo {
 	// Scatterplot Swing component object; inherits from JPanel
 	private ChartPanel cp;
 	// Source of data (e.g., filename, "Simulated Data", etc.)
-	String dsname;
+	private String dsname;
 	
 	/**
 	* Launch the application.
